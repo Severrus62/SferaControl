@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LED · Управление проектами (Битрикс24)</title>
+<!-- Bitrix24 JS SDK -->
+<script src="//api.bitrix24.com/api/v1/"></script>
+<style>
+:root{--bg:#f4f7fb;--ink:#1a2b42;--muted:#62748e;--line:#dce4ef;--blue:#2264da;--green:#167651;--red:#b72d44;--accent:#ff9800}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Arial}header{background:#142640;color:white;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}h1{margin:0 0 5px;font-size:22px}h2{font-size:18px;margin:0 0 14px}p{line-height:1.5}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:white;border-radius:8px;padding:8px 12px;color:var(--ink);transition:all .15s}button:hover{border-color:var(--blue)}button.primary{background:var(--blue);border-color:var(--blue);color:white}button.danger{color:var(--red)}button.success{background:var(--green);border-color:var(--green);color:white}input,select,textarea{width:100%;border:1px solid #bdcbdd;border-radius:7px;padding:8px 10px;background:white;color:var(--ink)}input[type=checkbox]{width:auto}textarea{min-height:75px;resize:vertical}main{max-width:1800px;margin:auto;padding:18px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.bar>input{max-width:320px}.bar>select{max-width:210px}.muted,small{color:var(--muted)}header .muted{color:#bed0e8}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:16px 0}.card,.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:16px}.card strong{display:block;font-size:24px;margin:4px 0}.card span{color:var(--muted);font-size:12px}.tabs{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}.tabs button.active{background:#dce9ff;border-color:#a4c2f5;color:#164ba0;font-weight:600}.scroll{overflow:auto;background:white;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--line)}th{background:#eaf0f8;white-space:nowrap;position:sticky;top:0;z-index:1}td{min-width:120px}td:first-child{min-width:200px}tr:last-child td{border-bottom:0}.sub{display:block;font-size:12px;color:var(--muted);margin-top:4px}.badge{display:inline-block;padding:3px 8px;border-radius:6px;background:#eaf0f8;font-size:12px;margin:2px 0;font-weight:500}.red{color:var(--red);background:#ffedf0}.green{color:var(--green);background:#e6f6ee}.orange{color:#885709;background:#fff3dc}.blue{color:var(--blue);background:#e7efff}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.link-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 7px;background:#edf3fc;border-radius:5px;font-size:11px;font-weight:500;margin-top:4px;color:var(--blue)}.link-pill:hover{background:#dce9ff}progress{width:120px;height:10px;accent-color:var(--blue);display:block;margin-top:5px}.empty{text-align:center;padding:35px;color:var(--muted)}.hint{background:#e7efff;border:1px solid #c5d8fb;border-radius:10px;padding:12px 16px;margin-bottom:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.chartrow{display:grid;grid-template-columns:170px 1fr 40px;gap:10px;align-items:center;margin:11px 0}.track{height:12px;background:#edf1f8;border-radius:10px;overflow:hidden}.fill{height:100%;background:var(--blue)}dialog{width:min(1100px,96vw);max-height:94vh;border:0;border-radius:14px;padding:0;color:var(--ink);box-shadow:0 15px 40px rgba(0,0,0,0.3)}dialog::backdrop{background:#10213a99}.modalhead{position:sticky;top:0;background:white;padding:16px 20px;border-bottom:1px solid var(--line);z-index:2;display:flex;justify-content:space-between;align-items:center}.modalbody{padding:20px;max-height:calc(94vh - 130px);overflow-y:auto}.formgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}label{display:block;font-size:12px;color:var(--muted)}label input,label select,label textarea{margin-top:4px}.wide{grid-column:1/-1}.half{grid-column:span 2}fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 16px;padding:14px}legend{font-weight:bold;padding:0 6px}.stagehead,.stageedit{display:grid;grid-template-columns:160px 1fr 1fr 90px;gap:8px;align-items:center;margin:8px 0}.invoiceedit{display:grid;grid-template-columns:1.3fr 1.2fr 1fr 1fr 1fr 40px;gap:8px;align-items:center;margin:8px 0}.footer{padding:14px 20px;border-top:1px solid var(--line);background:white;display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0;z-index:2}.notice{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}.pre{white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#142640;color:white;padding:10px 20px;border-radius:8px;z-index:100;max-width:90vw;box-shadow:0 8px 24px rgba(0,0,0,0.3)}.linkbutton{border:0;background:none;color:var(--blue);padding:0;text-align:left;font-weight:700;font-size:14px;cursor:pointer}.legend{font-size:12px;color:var(--muted);margin:10px 0}#envStatus{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500}@media(max-width:1000px){.cards{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}.formgrid{grid-template-columns:repeat(2,1fr)}.stageedit,.stagehead{grid-template-columns:140px 1fr 1fr 80px}.invoiceedit{grid-template-columns:1fr 1fr}}@media(max-width:600px){main{padding:10px}header{padding:16px}.cards{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.half{grid-column:auto}}
+</style></head><body>
+<header>
+  <div>
+    <h1>LED · Пульт руководителя проектов</h1>
+    <div class="muted">Контроль производства, экранов (в мм), расчётов, каркасов и оплат</div>
+  </div>
+  <div>
+    <span id="envStatus" class="badge">Инициализация…</span>
+  </div>
+</header>
+<main>
+<div class="hint" id="welcome"><b>Синхронизация с Битрикс24 активна.</b> Размеры экранов задаются в миллиметрах (площадь в м² считается автоматически). В карточке доступно прямое подключение ссылки на предварительный расчёт (КП / Excel / Google Таблицы / Сделка в CRM).</div>
+<div class="bar">
+  <button class="primary" id="new">+ Новый проект</button>
+  <button id="sync">↻ Синхронизировать</button>
+  <button id="backup">Скачать JSON</button>
+  <button id="restore">Загрузить JSON</button>
+  <button id="csv">Экспорт в CSV</button>
+  <button id="print">Печать / PDF</button>
+  <button class="danger" id="clear">Очистить базу</button>
+  <input type="file" id="file" accept=".json,application/json" hidden>
+</div>
+<div class="cards" id="kpis"></div>
+<nav class="tabs" id="tabs"></nav>
+<div class="bar" id="filters">
+  <input id="search" placeholder="Поиск: проект, заказчик, особенности…" aria-label="Поиск">
+  <select id="owner" aria-label="Ответственный"></select>
+  <select id="risk" aria-label="Фильтр рисков">
+    <option value="all">Все риски</option>
+    <option value="late">Просроченные проекты</option>
+    <option value="stage">Просроченные этапы</option>
+    <option value="metal">Просрочен металлокаркас</option>
+    <option value="invoice">Просроченные счета</option>
+    <option value="paused">На паузе</option>
+  </select>
+  <select id="sort" aria-label="Сортировка">
+    <option value="deadline">По сроку завершения</option>
+    <option value="name">По названию</option>
+    <option value="progress">По готовности</option>
+  </select>
+  <button id="reset">Сбросить фильтры</button>
+</div>
+<p class="legend" id="scope"></p>
+<section id="content"></section>
+<p class="notice">Готовность = среднее 6 этапов (по 16.6%). Закрытие проекта требует 100% готовности всех этапов и указания факта завершения. Металлокаркас и оплаты счетов контролируются независимо.</p>
+</main>
+
+<dialog id="editor"><form id="form">
+  <div class="modalhead">
+    <b id="editTitle">Карточка проекта</b>
+    <button type="button" id="close">Закрыть ✕</button>
+  </div>
+  <div class="modalbody">
+    <fieldset><legend>1. Проект, сроки и ссылки</legend>
+      <div class="formgrid">
+        <label class="half">Название проекта *<input name="name" required maxlength="200" placeholder="Например: Экран ТЦ Мега P4 8000х4000 мм"></label>
+        <label>Заказчик<input name="client" placeholder="ООО Заказчик"></label>
+        <label>Ответственный<select name="owner" id="ownerSelect"><option value="">-- Выберите --</option></select></label>
+        <label>Статус<select name="state"><option>В работе</option><option>На паузе</option><option>Завершён</option></select></label>
+        <label>Приоритет<select name="priority"><option>Обычный</option><option>Высокий</option><option>Критичный</option></select></label>
+        <label>Старт проекта<input type="date" name="start"></label>
+        <label>План завершения<input type="date" name="deadline"></label>
+        <label>Факт завершения<input type="date" name="finished"></label>
+        <label class="half">Ссылка на предварительный расчёт (КП / Excel / Диск)<input name="calcUrl" id="fieldCalcUrl" type="url" placeholder="https://... Ссылка на расчёт стоимости/смету/файл на диске"></label>
+        <label class="half">Ссылка на задачу в Битрикс24<input name="url" id="fieldUrl" type="url" placeholder="https://ваш-портал.bitrix24.ru/company/personal/user/.../tasks/task/view/..."></label>
+        <div class="wide" style="display:flex;align-items:center;gap:8px;">
+          <button type="button" id="createBitrixTask" class="primary" style="height:36px;white-space:nowrap;">+ Создать задачу в Битрикс24</button>
+          <button type="button" id="openBitrixTask" style="height:36px;white-space:nowrap;">Открыть задачу ↗</button>
+          <button type="button" id="openCalcUrl" style="height:36px;white-space:nowrap;">Открыть предварительный расчёт ↗</button>
+        </div>
+        <label class="wide">Место установки<input name="location" placeholder="Город, адрес, координаты или особенности площадки"></label>
+        <label class="wide">Ближайшее действие / блокер<input name="next" placeholder="Например: дождаться аванса за модули, согласовать проект КМ каркаса"></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>2. Основные параметры LED-экрана</legend>
+      <div class="formgrid">
+        <label>Исполнение<select name="screenType"><option>Внутренний (Indoor)</option><option>Уличный (Outdoor)</option><option>Арендный (Rental)</option><option>Медиафасад</option><option>Спортивное табло</option><option>Иное</option></select></label>
+        <label>Шаг пикселя, мм<input name="pitch" type="number" min="0.01" step="0.01" placeholder="например 2.5 или 4"></label>
+        <label>Ширина экрана, мм *<input name="widthMm" type="number" min="1" step="1" placeholder="в мм, например 8000"></label>
+        <label>Высота экрана, мм *<input name="heightMm" type="number" min="1" step="1" placeholder="в мм, например 4000"></label>
+        <label>Количество экранов<input name="qty" type="number" min="1" step="1" value="1"></label>
+        <label>Разрешение (пиксели)<input name="resolution" placeholder="1920 × 1080"></label>
+        <label>Яркость, кд/м²<input name="brightness" type="number" min="0" placeholder="1000 - 6500"></label>
+        <label>Степень защиты<input name="ip" placeholder="IP65 / IP54"></label>
+        <label>Размер модуля, мм<input name="module" placeholder="320 × 160"></label>
+        <label>Размер кабинета, мм<input name="cabinet" placeholder="960 × 960"></label>
+        <label>Контроллер / Видеопроцессор<input name="controller" placeholder="NovaStar TB60 / Colorlight"></label>
+        <label>Макс. мощность (1 экран), кВт<input name="power" type="number" min="0" step="0.01"></label>
+        <label>Обслуживание экрана<select name="service"><option>Фронтальное</option><option>Тыльное</option><option>Комбинированное</option></select></label>
+        <label class="wide">Уникальные особенности и требования проекта<textarea name="notes" placeholder="Форма экрана (изогнутый, угол 90°), тип крепления, доступ к электрощиту, ночной монтаж, сложность подъезда техники и т.д."></textarea></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>3. Стадии выполнения и готовность (0 – 100%)</legend>
+      <p class="muted" style="margin-top:0">Заполните даты плана и фактический процент. Прогресс всего проекта пересчитывается автоматически.</p>
+      <div class="stagehead muted"><span>Этап проекта</span><span>План начала</span><span>План окончания</span><span>Готовность %</span></div>
+      <div id="stageInputs"></div>
+    </fieldset>
+
+    <fieldset><legend>4. Металлокаркас (отдельный контроль производства)</legend>
+      <div class="formgrid">
+        <label>Статус изготовления<select name="metalStatus"><option>Не требуется</option><option>Не начат</option><option>Проектирование / КМД</option><option>Согласование чертежей</option><option>В производстве (сварка)</option><option>Покраска / цинкование</option><option>Готов на складе</option><option>Передан на монтаж</option></select></label>
+        <label>Исполнитель / подрядчик<input name="metalVendor" placeholder="Название цеха / подрядчика"></label>
+        <label>План начала изготовления<input type="date" name="metalStart"></label>
+        <label>План готовности каркаса<input type="date" name="metalDue"></label>
+        <label>Факт готовности каркаса<input type="date" name="metalFact"></label>
+        <label class="wide">Комментарий по металлокаркасу<input name="metalNote" placeholder="Материал профиля, тип крепления к стене/крыше, вес, ветровые нагрузки"></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>5. Закупка комплектующих — счета и статус оплаты</legend>
+      <div class="invoiceedit muted"><span>Счёт / Назначение</span><span>Поставщик</span><span>Сумма, ₽</span><span>Оплачено, ₽</span><span>Оплатить до</span><span></span></div>
+      <div id="invoiceInputs"></div>
+      <button type="button" id="addInvoice" style="margin-top:8px;">+ Добавить счёт</button>
+    </fieldset>
+  </div>
+  <div class="footer">
+    <button type="button" id="delete" class="danger">Удалить проект</button>
+    <button type="submit" class="primary">Сохранить в Битрикс24</button>
+  </div>
+</form></dialog>
+
+<div id="toast" hidden></div>
+
+<script>
+'use strict';
+const STORAGE_KEY = 'led_projects_b24_v2';
+const STAGES = ['Старт проекта','Закупка комплектующих','Производство','Отгрузка','Монтаж','Завершение проекта'];
+let isBitrix = false, b24Users = [], portalDomain = '', projects = [], tab = 'current', editingId = null;
+
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const shift = n => { const d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + Math.random().toString(36).slice(2);
+const fmt = n => Number(n || 0).toLocaleString('ru-RU', { maximumFractionDigits: 2 });
+const money = n => fmt(n) + ' ₽';
+const date = s => s ? String(s).split('-').reverse().join('.') : '—';
+const safeURL = s => { try { const u = new URL(s); return ['https:', 'http:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
+
+function blank() {
+  return {
+    id: uid(), b24TaskId: '', name: '', client: '', owner: '', state: 'В работе', priority: 'Обычный',
+    start: today(), deadline: shift(30), finished: '', url: '', calcUrl: '', location: '', next: '',
+    screenType: 'Внутренний (Indoor)', pitch: '', widthMm: '', heightMm: '', qty: 1, resolution: '',
+    brightness: '', ip: '', module: '', cabinet: '', controller: '', power: '', service: 'Фронтальное',
+    notes: '', metalStatus: 'Не начат', metalVendor: '', metalStart: '', metalDue: '', metalFact: '',
+    metalNote: '', stages: STAGES.map(() => ({ start: '', due: '', progress: 0 })), invoices: []
+  };
+}
+
+function demoData() {
+  return [
+    Object.assign(blank(), {
+      name: 'Медиафасад ТРЦ «Кристалл»', client: 'Девелопмент Групп', owner: 'Иванов Иван', priority: 'Высокий',
+      start: shift(-25), deadline: shift(18), location: 'Москва, Варшавское шоссе',
+      calcUrl: 'https://docs.google.com/spreadsheets/d/demo-calc-led-1',
+      screenType: 'Уличный (Outdoor)', pitch: 5.95, widthMm: 12000, heightMm: 6000, qty: 1, resolution: '2016 × 1008',
+      brightness: 6500, ip: 'IP65', module: '320 × 160', controller: 'NovaStar TB60 + VX600', power: 36,
+      notes: 'Крепление на ферму навесного фасада. Монтаж спецтехникой ночью с 00:00 до 06:00.',
+      next: 'Принять модули на таможне, утвердить финальный КМД металлокаркаса',
+      metalStatus: 'В производстве (сварка)', metalVendor: 'Цех СтальКонструкция', metalStart: shift(-10), metalDue: shift(5),
+      stages: [
+        { start: shift(-25), due: shift(-20), progress: 100 },
+        { start: shift(-20), due: shift(-5), progress: 85 },
+        { start: shift(-5), due: shift(10), progress: 40 },
+        { start: shift(10), due: shift(12), progress: 0 },
+        { start: shift(12), due: shift(16), progress: 0 },
+        { start: shift(16), due: shift(18), progress: 0 }
+      ],
+      invoices: [
+        { name: 'СЧ-401 · LED модули P5.95', vendor: 'LedMan Opto', amount: 2450000, paid: 1500000, due: shift(-2) },
+        { name: 'СЧ-402 · Блоки питания MeanWell', vendor: 'ЭлектроКом', amount: 320000, paid: 320000, due: shift(-12) }
+      ]
+    }),
+    Object.assign(blank(), {
+      name: 'Видеостена конференц-зала банка', client: 'ПАО ФинансБанк', owner: 'Петров Алексей', priority: 'Обычный',
+      start: shift(-15), deadline: shift(7), location: 'Центральный офис, 4 этаж',
+      calcUrl: 'https://ваш-портал.bitrix24.ru/crm/deal/details/105/',
+      screenType: 'Внутренний (Indoor)', pitch: 1.53, widthMm: 4800, heightMm: 2700, qty: 1, resolution: '3137 × 1764',
+      brightness: 800, ip: 'IP40', module: '320 × 160', controller: 'Colorlight X4e', power: 4.5,
+      notes: 'Сверхточная бесшовная юстировка кабинетов. Бесшумные блоки питания.',
+      next: 'Доставка кабинетов на объект',
+      metalStatus: 'Готов на складе', metalVendor: 'Собственный цех', metalStart: shift(-14), metalDue: shift(-5), metalFact: shift(-6),
+      stages: [
+        { start: shift(-15), due: shift(-12), progress: 100 },
+        { start: shift(-12), due: shift(-3), progress: 100 },
+        { start: shift(-3), due: shift(3), progress: 90 },
+        { start: shift(3), due: shift(5), progress: 0 },
+        { start: shift(5), due: shift(6), progress: 0 },
+        { start: shift(6), due: shift(7), progress: 0 }
+      ],
+      invoices: [
+        { name: 'СЧ-550 · Комплект кабинетов в сборе', vendor: 'Unilumin', amount: 1890000, paid: 1890000, due: shift(-10) }
+      ]
+    })
+  ];
+}
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.hidden = false;
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.hidden = true, 4000);
+}
+
+// B24 API INIT & STORAGE
+function initApp() {
+  if (typeof BX24 !== 'undefined') {
+    isBitrix = true;
+    BX24.init(function() {
+      portalDomain = BX24.getDomain();
+      $('#envStatus').textContent = 'Битрикс24: ' + portalDomain;
+      $('#envStatus').className = 'badge green';
+      BX24.fitWindow();
+      loadBitrixUsers();
+      loadDataFromB24();
+    });
+  } else {
+    isBitrix = false;
+    $('#envStatus').textContent = 'Автономный режим (Локально)';
+    $('#envStatus').className = 'badge orange';
+    loadDataLocal();
+  }
+}
+
+function loadBitrixUsers() {
+  if (!isBitrix) return;
+  BX24.callMethod('user.get', { ACTIVE: true, sort: 'LAST_NAME', order: 'ASC' }, function(res) {
+    if (res.data()) {
+      b24Users = res.data();
+      updateOwnerDropdowns();
+    }
+  });
+}
+
+function updateOwnerDropdowns() {
+  const opts = ['<option value="">-- Все ответственные --</option>'];
+  if (b24Users.length) {
+    b24Users.forEach(u => {
+      const name = `${u.LAST_NAME || ''} ${u.NAME || ''}`.trim() || u.EMAIL;
+      opts.push(`<option value="${esc(name)}">${esc(name)}</option>`);
+    });
+  } else {
+    const list = [...new Set(projects.map(p => p.owner).filter(Boolean))];
+    list.forEach(o => opts.push(`<option value="${esc(o)}">${esc(o)}</option>`));
+  }
+  const curFilter = $('#owner').value;
+  $('#owner').innerHTML = opts.join('');
+  $('#owner').value = curFilter;
+
+  const formOpts = ['<option value="">-- Не назначен --</option>'];
+  if (b24Users.length) {
+    b24Users.forEach(u => {
+      const name = `${u.LAST_NAME || ''} ${u.NAME || ''}`.trim() || u.EMAIL;
+      formOpts.push(`<option value="${esc(name)}" data-id="${u.ID}">${esc(name)}</option>`);
+    });
+  }
+  $('#ownerSelect').innerHTML = formOpts.join('');
+}
+
+function normalizeLegacy(arr) {
+  return arr.map(p => {
+    // Конвертация старых метров в миллиметры, если поле width существовало
+    if (p.widthMm === undefined && p.width !== undefined) {
+      p.widthMm = p.width ? Math.round(Number(p.width) * 1000) : '';
+    }
+    if (p.heightMm === undefined && p.height !== undefined) {
+      p.heightMm = p.height ? Math.round(Number(p.height) * 1000) : '';
+    }
+    if (p.calcUrl === undefined) p.calcUrl = '';
+    return p;
+  });
+}
+
+function loadDataFromB24() {
+  BX24.appOption.get(STORAGE_KEY, function(data) {
+    if (data && typeof data === 'string' && data.length > 5) {
+      try {
+        projects = normalizeLegacy(JSON.parse(data));
+      } catch(e) {
+        projects = demoData();
+      }
+    } else {
+      projects = demoData();
+      saveData();
+    }
+    render();
+  });
+}
+
+function loadDataLocal() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('led_projects_b24_v1');
+    projects = raw ? normalizeLegacy(JSON.parse(raw)) : demoData();
+  } catch(e) {
+    projects = demoData();
+  }
+  render();
+}
+
+function saveData() {
+  const json = JSON.stringify(projects);
+  if (isBitrix) {
+    BX24.appOption.set(STORAGE_KEY, json, function() {
+      toast('Синхронизировано с Битрикс24');
+    });
+  } else {
+    try {
+      localStorage.setItem(STORAGE_KEY, json);
+      toast('Сохранено в памяти браузера');
+    } catch(e) {
+      toast('Ошибка сохранения');
+    }
+  }
+}
+
+// CALCS
+const done = p => p.state === 'Завершён';
+const progress = p => Math.round(p.stages.reduce((a, s) => a + Number(s.progress), 0) / 6);
+const late = p => !done(p) && p.deadline && p.deadline < today();
+const stageLate = p => !done(p) && p.stages.some(s => s.due && s.due < today() && s.progress < 100);
+const metalDone = p => ['Не требуется', 'Готов на складе', 'Передан на монтаж'].includes(p.metalStatus);
+const metalLate = p => !metalDone(p) && p.metalDue && p.metalDue < today();
+const invLate = i => i.due && i.due < today() && i.paid < i.amount;
+const debt = p => p.invoices.reduce((a, i) => a + (i.amount - i.paid), 0);
+const total = p => p.invoices.reduce((a, i) => a + i.amount, 0);
+const currentStage = p => done(p) ? 'Завершён' : STAGES[p.stages.findIndex(s => s.progress < 100)] || 'Готов к сдаче';
+
+function screenAreaM2(p) {
+  if (p.widthMm && p.heightMm) {
+    const areaOne = (Number(p.widthMm) / 1000) * (Number(p.heightMm) / 1000);
+    return fmt(areaOne * Number(p.qty || 1)) + ' м²';
+  }
+  return '—';
+}
+
+function filtered() {
+  const q = $('#search').value.toLowerCase().trim();
+  const o = $('#owner').value;
+  const r = $('#risk').value;
+  return projects.filter(p => {
+    const matchQ = !q || [p.name, p.client, p.owner, p.location, p.notes, p.next, p.metalNote].join(' ').toLowerCase().includes(q);
+    const matchO = !o || p.owner === o;
+    const matchR = {
+      all: true,
+      late: late(p),
+      stage: stageLate(p),
+      metal: metalLate(p),
+      invoice: p.invoices.some(invLate),
+      paused: p.state === 'На паузе'
+    }[r];
+    return matchQ && matchO && matchR;
+  }).sort((a, b) => {
+    if ($('#sort').value === 'name') return a.name.localeCompare(b.name, 'ru');
+    if ($('#sort').value === 'progress') return progress(b) - progress(a);
+    return (a.deadline || '9999').localeCompare(b.deadline || '9999');
+  });
+}
+
+const badge = (s, c = '') => `<span class="badge ${c}">${esc(s)}</span>`;
+const tr = cols => `<tr>${cols.map(c => `<td>${c}</td>`).join('')}</tr>`;
+
+const linksBlock = p => {
+  let res = [];
+  if (p.calcUrl && safeURL(p.calcUrl)) {
+    res.push(`<a class="link-pill" href="${esc(safeURL(p.calcUrl))}" target="_blank" rel="noopener">📄 Расчёт КП ↗</a>`);
+  }
+  if (p.url && safeURL(p.url)) {
+    res.push(`<a class="link-pill" href="${esc(safeURL(p.url))}" target="_blank" rel="noopener">✔ Задача B24 ↗</a>`);
+  } else if (p.b24TaskId && portalDomain) {
+    res.push(`<a class="link-pill" href="https://${portalDomain}/company/personal/user/0/tasks/task/view/${p.b24TaskId}/" target="_blank">✔ Задача #${p.b24TaskId} ↗</a>`);
+  }
+  return res.length ? res.join('<br>') : '<span class="muted">Нет ссылок</span>';
+};
+
+function render() {
+  const active = projects.filter(p => !done(p));
+  const closed = projects.filter(done);
+  const overdueInvoices = projects.flatMap(p => p.invoices).filter(invLate);
+
+  $('#kpis').innerHTML = [
+    ['Текущие проекты', active.length, 'В производстве / на монтаже'],
+    ['Завершённые', closed.length, 'Успешно сданы'],
+    ['Просроченные', active.filter(late).length, 'Дедлайн просрочен'],
+    ['Средняя готовность', active.length ? Math.round(active.reduce((a, p) => a + progress(p), 0) / active.length) + '%' : '—', 'По активным проектам'],
+    ['Остаток по счетам', money(projects.reduce((a, p) => a + debt(p), 0)), 'К доплате поставщикам'],
+    ['Просроченные счета', overdueInvoices.length, money(overdueInvoices.reduce((a, i) => a + (i.amount - i.paid), 0))]
+  ].map(([t, val, sub]) => `<div class="card"><span>${t}</span><strong style="font-size:${String(val).length > 11 ? '20' : '24'}px">${val}</strong><span>${sub}</span></div>`).join('');
+
+  $('#tabs').innerHTML = [
+    ['current', `Текущие · ${active.length}`],
+    ['done', `Завершённые · ${closed.length}`],
+    ['metal', 'Металлокаркасы'],
+    ['invoices', 'Закупочные счета'],
+    ['analytics', 'Аналитика']
+  ].map(([k, label]) => `<button data-tab="${k}" class="${tab === k ? 'active' : ''}">${label}</button>`).join('');
+
+  const list = filtered();
+  $('#scope').textContent = `Дата: ${date(today())}. ${tab === 'current' ? 'Активные проекты' : tab === 'done' ? 'Архив завершённых' : 'Все проекты'}. Найдено строк: ${list.length}.`;
+
+  if (tab === 'current' || tab === 'done') {
+    const rows = list.filter(p => done(p) === (tab === 'done'));
+    $('#content').innerHTML = `
+      <div class="scroll"><table><thead><tr>
+        <th>Проект / Заказчик</th>
+        <th>Параметры LED экрана (в мм)</th>
+        <th>Статус / Готовность</th>
+        <th>Сроки</th>
+        <th>Металлокаркас</th>
+        <th>Счета закупки</th>
+        <th>Ближайший шаг / Особенности</th>
+        <th>Ссылки (Расчёт / Битрикс)</th>
+      </tr></thead><tbody>
+      ${rows.length ? rows.map(p => tr([
+        `<button class="linkbutton" data-edit="${esc(p.id)}">${esc(p.name)}</button><span class="sub">${esc(p.client || 'Клиент не указан')} · ${esc(p.owner || 'Без отв.')}</span>` + (p.priority !== 'Обычный' ? `<br>${badge(p.priority, p.priority === 'Критичный' ? 'red' : 'orange')}` : ''),
+        `${esc(p.screenType)} · P${esc(p.pitch || '—')}<span class="sub"><b>${fmt(p.widthMm || 0)} × ${fmt(p.heightMm || 0)} мм</b> (${p.qty} шт.)</span><span class="sub">${screenAreaM2(p)} · ${esc(p.resolution || 'Без разрешения')}</span>`,
+        `${badge(p.state, done(p) ? 'green' : p.state === 'На паузе' ? 'orange' : 'blue')}<div>${esc(currentStage(p))}</div><b>${progress(p)}%</b><progress max="100" value="${progress(p)}"></progress>${stageLate(p) ? badge('Просрочен этап', 'red') : ''}`,
+        `Старт: ${date(p.start)}<br>План: ${date(p.deadline)}${done(p) ? `<br>Факт: ${date(p.finished)}` : ''}<br>${late(p) ? badge('Просрочен', 'red') : ''}`,
+        `${badge(p.metalStatus, metalLate(p) ? 'red' : metalDone(p) ? 'green' : '')}<span class="sub">Срок: ${date(p.metalDue)}</span>`,
+        `${money(total(p) - debt(p))} / ${money(total(p))}<span class="sub">Остаток: ${money(debt(p))}</span>${p.invoices.some(invLate) ? badge('Просрочен счёт', 'red') : ''}`,
+        `<div class="pre">${esc(p.next || '—')}</div><span class="sub pre">${esc(p.notes || '')}</span>`,
+        linksBlock(p)
+      ])).join('') : '<tr><td colspan="8" class="empty">Нет проектов для отображения</td></tr>'}
+      </tbody></table></div>`;
+  }
+
+  if (tab === 'metal') {
+    const metalRows = list.filter(p => p.metalStatus !== 'Не требуется');
+    $('#content').innerHTML = `
+      <div class="scroll"><table><thead><tr>
+        <th>Проект</th><th>Статус каркаса</th><th>Исполнитель / Цех</th><th>Габариты экрана (мм)</th><th>План работ</th><th>Факт готовности</th><th>Технические заметки</th><th>Ссылки</th>
+      </tr></thead><tbody>
+      ${metalRows.length ? metalRows.map(p => tr([
+        `<button class="linkbutton" data-edit="${esc(p.id)}">${esc(p.name)}</button>`,
+        badge(p.metalStatus, metalLate(p) ? 'red' : metalDone(p) ? 'green' : 'blue'),
+        esc(p.metalVendor || '—'),
+        `${fmt(p.widthMm || 0)} × ${fmt(p.heightMm || 0)} мм`,
+        `${date(p.metalStart)} → ${date(p.metalDue)}`,
+        `${date(p.metalFact)} ${metalLate(p) ? badge('Просрочен', 'red') : ''}`,
+        `<div class="pre">${esc(p.metalNote || '—')}</div>`,
+        linksBlock(p)
+      ])).join('') : '<tr><td colspan="8" class="empty">Нет данных по металлокаркасам</td></tr>'}
+      </tbody></table></div>`;
+  }
+
+  if (tab === 'invoices') {
+    const invRows = list.flatMap(p => p.invoices.map(i => ({ p, i })));
+    const totalSum = invRows.reduce((a, { i }) => a + i.amount, 0);
+    const paidSum = invRows.reduce((a, { i }) => a + i.paid, 0);
+    $('#content').innerHTML = `
+      <div class="hint">Всего счетов: <b>${invRows.length}</b> на сумму <b>${money(totalSum)}</b>. Оплачено: <b>${money(paidSum)}</b>. Остаток к оплате: <b>${money(totalSum - paidSum)}</b>.</div>
+      <div class="scroll"><table><thead><tr>
+        <th>Проект</th><th>Счёт / Назначение</th><th>Поставщик</th><th>Сумма счёта</th><th>Оплачено</th><th>Остаток</th><th>Срок оплаты</th><th>Статус</th>
+      </tr></thead><tbody>
+      ${invRows.length ? invRows.map(({ p, i }) => tr([
+        `<button class="linkbutton" data-edit="${esc(p.id)}">${esc(p.name)}</button>`,
+        esc(i.name || 'Без названия'),
+        esc(i.vendor || '—'),
+        money(i.amount),
+        money(i.paid),
+        money(i.amount - i.paid),
+        date(i.due),
+        badge(i.paid >= i.amount ? 'Оплачен полностью' : i.paid > 0 ? 'Частично оплачен' : 'Не оплачен', i.paid >= i.amount ? 'green' : invLate(i) ? 'red' : 'orange') + (invLate(i) ? `<br>${badge('Просрочен', 'red')}` : '')
+      ])).join('') : '<tr><td colspan="8" class="empty">Нет счетов</td></tr>'}
+      </tbody></table></div>`;
+  }
+
+  if (tab === 'analytics') renderAnalytics(list);
+}
+
+function renderAnalytics(list) {
+  const active = list.filter(p => !done(p));
+  const bars = (names, counts) => names.map((n, i) => `
+    <div class="chartrow">
+      <span>${esc(n)}</span>
+      <div class="track"><div class="fill" style="width:${(counts[i] / Math.max(1, ...counts) * 100)}%"></div></div>
+      <b>${counts[i]}</b>
+    </div>`).join('');
+
+  const stageCounts = STAGES.map((s, i) => active.filter(p => p.stages.findIndex(t => t.progress < 100) === i).length);
+  const risks = [
+    ['Просрочен проект', active.filter(late).length],
+    ['Просрочен этап', active.filter(stageLate).length],
+    ['Просрочен каркас', list.filter(metalLate).length],
+    ['Просрочены счета', list.filter(p => p.invoices.some(invLate)).length],
+    ['На паузе', active.filter(p => p.state === 'На паузе').length]
+  ];
+
+  const totalAreaM2 = active.reduce((acc, p) => {
+    if (p.widthMm && p.heightMm) {
+      return acc + (Number(p.widthMm) * Number(p.heightMm) * Number(p.qty || 1)) / 1000000;
+    }
+    return acc;
+  }, 0);
+
+  $('#content').innerHTML = `
+    <div class="grid2">
+      <div class="panel">
+        <h2>Воронка производства (текущие проекты)</h2>
+        ${bars(STAGES, stageCounts)}
+        <p style="margin-top:14px">Суммарная площадь экранов в работе: <b>${fmt(totalAreaM2)} м²</b></p>
+      </div>
+      <div class="panel">
+        <h2>Флаги внимания и риски</h2>
+        ${bars(risks.map(r => r[0]), risks.map(r => r[1]))}
+      </div>
+    </div>`;
+}
+
+// EDITOR
+function openEditor(id) {
+  const p = projects.find(x => x.id === id) || blank();
+  editingId = id || null;
+  $('#form').reset();
+  for (const [k, v] of Object.entries(p)) {
+    const el = $('#form').elements.namedItem(k);
+    if (el) el.value = v;
+  }
+  $('#editTitle').textContent = editingId ? `Проект: ${p.name}` : 'Новый проект LED';
+  $('#delete').hidden = !editingId;
+  $('#stageInputs').innerHTML = p.stages.map((s, i) => `
+    <div class="stageedit">
+      <b>${STAGES[i]}</b>
+      <input type="date" data-s="${i}" data-k="start" value="${esc(s.start)}">
+      <input type="date" data-s="${i}" data-k="due" value="${esc(s.due)}">
+      <input type="number" min="0" max="100" step="1" data-s="${i}" data-k="progress" value="${s.progress}">
+    </div>`).join('');
+
+  $('#invoiceInputs').innerHTML = '';
+  p.invoices.forEach(addInvoiceRow);
+  $('#editor').showModal();
+}
+
+function addInvoiceRow(i = { name: '', vendor: '', amount: 0, paid: 0, due: '' }) {
+  const div = document.createElement('div');
+  div.className = 'invoiceedit';
+  div.innerHTML = `
+    <input data-f="name" placeholder="№ счёта" value="${esc(i.name)}">
+    <input data-f="vendor" placeholder="Поставщик" value="${esc(i.vendor)}">
+    <input data-f="amount" type="number" min="0" step="0.01" placeholder="Сумма" value="${i.amount}">
+    <input data-f="paid" type="number" min="0" step="0.01" placeholder="Оплачено" value="${i.paid}">
+    <input data-f="due" type="date" value="${esc(i.due)}">
+    <button type="button" class="danger removeInvoice" title="Удалить">✕</button>`;
+  $('#invoiceInputs').append(div);
+}
+
+$('#addInvoice').onclick = () => addInvoiceRow();
+$('#invoiceInputs').onclick = e => { if (e.target.closest('.removeInvoice')) e.target.closest('.invoiceedit').remove(); };
+
+// BITRIX / CALC BUTTONS
+$('#createBitrixTask').onclick = function() {
+  if (!isBitrix) {
+    alert('Создание задач напрямую доступно при открытии внутри Битрикс24. В автономном режиме укажите ссылку на задачу вручную.');
+    return;
+  }
+  const name = $('#form').elements.namedItem('name').value;
+  if (!name) { alert('Сначала введите название проекта'); return; }
+
+  const ownerSelect = $('#ownerSelect');
+  const selOpt = ownerSelect.options[ownerSelect.selectedIndex];
+  const respId = selOpt ? selOpt.dataset.id : '';
+  const deadline = $('#form').elements.namedItem('deadline').value;
+  const calcUrl = $('#fieldCalcUrl').value;
+
+  const desc = `Производство LED экрана: ${name}
+Заказчик: ${$('#form').elements.namedItem('client').value}
+Исполнение: ${$('#form').elements.namedItem('screenType').value}, Шаг пикселя: P${$('#form').elements.namedItem('pitch').value} мм
+Размер экрана: ${$('#form').elements.namedItem('widthMm').value} × ${$('#form').elements.namedItem('heightMm').value} мм (${$('#form').elements.namedItem('qty').value} шт.)
+Металлокаркас: ${$('#form').elements.namedItem('metalStatus').value}
+Предварительный расчёт: ${calcUrl || 'Не указан'}
+Особенности: ${$('#form').elements.namedItem('notes').value}`;
+
+  const taskData = {
+    fields: {
+      TITLE: 'LED: ' + name,
+      DESCRIPTION: desc,
+      DEADLINE: deadline ? deadline + 'T19:00:00+03:00' : ''
+    }
+  };
+  if (respId) taskData.fields.RESPONSIBLE_ID = respId;
+
+  BX24.callMethod('tasks.task.add', taskData, function(res) {
+    if (res.error()) {
+      alert('Ошибка создания задачи: ' + res.error());
+    } else {
+      const taskId = res.data().task.id;
+      const taskUrl = `https://${portalDomain}/company/personal/user/0/tasks/task/view/${taskId}/`;
+      $('#fieldUrl').value = taskUrl;
+      toast('Задача #' + taskId + ' создана в Битрикс24!');
+    }
+  });
+};
+
+$('#openBitrixTask').onclick = function() {
+  const url = $('#fieldUrl').value;
+  if (url) window.open(url, '_blank');
+  else alert('Ссылка на задачу ещё не указана.');
+};
+
+$('#openCalcUrl').onclick = function() {
+  const url = $('#fieldCalcUrl').value;
+  if (url) window.open(url, '_blank');
+  else alert('Ссылка на предварительный расчёт ещё не заполнена.');
+};
+
+// FORM SAVE
+$('#form').onsubmit = function(e) {
+  e.preventDefault();
+  const p = blank();
+  p.id = editingId || p.id;
+  for (const [k, v] of new FormData(e.target)) p[k] = String(v).trim();
+
+  // Числовые поля
+  ['pitch', 'widthMm', 'heightMm', 'qty', 'brightness', 'power'].forEach(k => {
+    p[k] = p[k] === '' ? '' : Number(p[k]);
+  });
+
+  document.querySelectorAll('[data-s]').forEach(el => {
+    p.stages[Number(el.dataset.s)][el.dataset.k] = el.dataset.k === 'progress' ? Number(el.value) : el.value;
+  });
+
+  p.invoices = [...$('#invoiceInputs').children].map(row => {
+    const inv = {};
+    row.querySelectorAll('[data-f]').forEach(el => {
+      inv[el.dataset.f] = ['amount', 'paid'].includes(el.dataset.f) ? Number(el.value) : el.value.trim();
+    });
+    return inv;
+  });
+
+  if (p.calcUrl && !safeURL(p.calcUrl)) {
+    alert('Ссылка на предварительный расчёт должна начинаться с https:// или http://');
+    return;
+  }
+  if (p.url && !safeURL(p.url)) {
+    alert('Ссылка на задачу Битрикс24 должна начинаться с https:// или http://');
+    return;
+  }
+
+  if (p.state === 'Завершён' && (p.stages.some(s => s.progress !== 100) || !p.finished)) {
+    alert('Чтобы перевести проект в статус «Завершён», укажите 100% готовности для каждого этапа и заполните фактическую дату завершения.');
+    return;
+  }
+
+  const idx = projects.findIndex(x => x.id === editingId);
+  if (idx >= 0) projects[idx] = p; else projects.push(p);
+
+  $('#editor').close();
+  saveData();
+  render();
+};
+
+$('#new').onclick = () => openEditor();
+$('#close').onclick = () => $('#editor').close();
+$('#delete').onclick = () => {
+  if (confirm('Удалить проект?')) {
+    projects = projects.filter(x => x.id !== editingId);
+    $('#editor').close();
+    saveData();
+    render();
+  }
+};
+
+$('#tabs').onclick = e => {
+  const b = e.target.closest('[data-tab]');
+  if (b) { tab = b.dataset.tab; render(); }
+};
+$('#content').onclick = e => {
+  const b = e.target.closest('[data-edit]');
+  if (b) openEditor(b.dataset.edit);
+};
+$('#search').oninput = render;
+['owner', 'risk', 'sort'].forEach(id => $('#' + id).onchange = render);
+$('#reset').onclick = () => {
+  $('#search').value = '';
+  $('#owner').value = '';
+  $('#risk').value = 'all';
+  $('#sort').value = 'deadline';
+  render();
+};
+$('#sync').onclick = () => { if (isBitrix) loadDataFromB24(); else loadDataLocal(); toast('Данные обновлены'); };
+$('#print').onclick = () => window.print();
+
+// JSON BACKUP / RESTORE
+function downloadFile(content, fileName, type) {
+  const blob = new Blob([content], { type });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fileName;
+  a.click();
+}
+
+$('#backup').onclick = () => downloadFile(JSON.stringify(projects, null, 2), `LED_B24_Backup_${today()}.json`, 'application/json');
+$('#restore').onclick = () => $('#file').click();
+$('#file').onchange = async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  try {
+    const data = JSON.parse(await f.text());
+    if (Array.isArray(data)) {
+      projects = normalizeLegacy(data);
+      saveData();
+      render();
+      toast('Резервная копия успешно загружена');
+    }
+  } catch(err) { alert('Ошибка загрузки JSON файла'); }
+  e.target.value = '';
+};
+
+$('#csv').onclick = () => {
+  const headers = ['Проект','Клиент','Ответственный','Статус','Приоритет','Готовность %','Дедлайн','Шаг пикселя мм','Ширина мм','Высота мм','Площадь м²','Каркас статус','Каркас срок','Счета всего','Оплачено','Остаток','Ссылка на расчёт','Ссылка на Битрикс24'];
+  const rows = projects.map(p => [
+    p.name, p.client, p.owner, p.state, p.priority, progress(p), p.deadline,
+    p.pitch, p.widthMm, p.heightMm,
+    p.widthMm && p.heightMm ? ((p.widthMm * p.heightMm * (p.qty || 1)) / 1000000).toFixed(2) : '',
+    p.metalStatus, p.metalDue, total(p), total(p)-debt(p), debt(p), p.calcUrl, p.url
+  ]);
+  const csv = '\ufeff' + [headers, ...rows].map(r => r.map(c => `"${String(c||'').replace(/"/g, '""')}"`).join(';')).join('\r\n');
+  downloadFile(csv, `LED_Экспорт_${today()}.csv`, 'text/csv;charset=utf-8');
+};
+
+$('#clear').onclick = () => {
+  if (confirm('Очистить всю базу проектов? Рекомендуется сначала скачать JSON.')) {
+    projects = [];
+    saveData();
+    render();
+  }
+};
+
+window.addEventListener('DOMContentLoaded', initApp);
+</script></body></html>
